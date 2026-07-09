@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Icon Lab - OER Design Studio</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-inner">
+        <a href="#" id="brand-link" class="brand"
+          >Icon Lab
+          <span
+            ><img
+              src="images/Pressbooks_Icon_Fanshawe-NorthStar_Red.png"
+              style="width: 23px; height: 23px" /></span
+        ></a>
+        <div class="nav-tabs">
+          <button id="tab-processor" class="tab tab-active">
+            HTML Icon Mass Injector
+          </button>
+          <button id="tab-bulk" class="tab">Bulk Transformer</button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <section
+        id="processor-grid"
+        class="hidden grid grid-cols-1 md:grid-cols-2 gap-md mt-md"
+      >
+        <div class="md:col-span-2 text-body text-on-surface-dim mb-sm">
+          Paste your entire Pressbooks HTML code into the Pressbooks Style
+          Injector, choose a colour, and pick which image formats should be
+          affected. Click transform to apply that colour to all appropriate
+          images. The entire modified code will be output to the right, just
+          paste it into Pressbooks!
+        </div>
+        <div class="card flex flex-col gap-md">
+          <h3 class="section-title mb-sm">Pressbooks Style Injector</h3>
+          <div class="flex gap-md">
+            <div class="flex-1">
+              <label class="label">Target Hex Color</label>
+              <div class="flex items-center gap-sm mt-xs">
+                <div
+                  class="swatch"
+                  id="html-color-preview"
+                  style="background-color: #e02726"
+                >
+                  <input type="color" id="html-color-picker" value="#E02726" />
+                </div>
+                <input
+                  class="input"
+                  id="html-hex-text"
+                  type="text"
+                  value="E02726"
+                />
+              </div>
+            </div>
+            <div class="flex-1">
+              <label class="label">Target Image Types</label>
+              <div class="flex gap-md mt-xs">
+                <label class="option-label">
+                  <input type="checkbox" id="checkbox-target-svg" checked />
+                  <span class="text-xs">SVG</span>
+                </label>
+                <label class="option-label">
+                  <input type="checkbox" id="checkbox-target-png" />
+                  <span class="text-xs">PNG</span>
+                </label>
+                <label class="option-label">
+                  <input type="checkbox" id="checkbox-target-jpeg" />
+                  <span class="text-xs">JPEG</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="flex-grow flex flex-col mt-sm">
+            <label class="label">Paste Raw HTML Here</label>
+            <textarea
+              id="html-input-markup"
+              class="textarea textarea-light flex-grow"
+              style="min-height: 250px"
+              placeholder="<div> <svg>...</svg> </div>"
+            ></textarea>
+          </div>
+          <button id="btn-process-html" class="btn btn-primary w-full">
+            Transform
+          </button>
+        </div>
+        <div class="card flex flex-col gap-md">
+          <h3 class="section-title mb-sm">HTML Output</h3>
+          <div class="flex flex-col flex-grow">
+            <div class="flex justify-end mb-xs">
+              <button id="btn-clear-html" class="link-btn">Clear</button>
+            </div>
+            <textarea
+              id="html-output-markup"
+              readonly
+              class="textarea textarea-light flex-grow"
+              style="min-height: 200px"
+              placeholder="Your modified code output will appear here..."
+            ></textarea>
+          </div>
+          <button id="btn-copy-html" class="btn btn-primary w-full">
+            Copy
+          </button>
+        </div>
+      </section>
+
+      <section
+        id="bulk-grid"
+        class="hidden grid grid-cols-1 lg:grid-cols-2 gap-md mt-md"
+      >
+        <div class="card flex flex-col gap-md">
+          <h3 class="section-title mb-sm">Bulk Icon Transformer</h3>
+          <p class="text-body text-on-surface-dim mb-sm">
+            Upload up to 20 SVGs.
+          </p>
+
+          <div id="bulk-drop-zone" class="drop-zone">
+            <span class="material-symbols-outlined drop-zone-icon mb-md"
+              >cloud_upload</span
+            >
+            <p class="text-body-lg text-on-surface mb-md font-semibold">
+              Drag & drop images here
+            </p>
+            <p class="text-body text-on-surface-dim mb-xl">or</p>
+            <label class="cursor-pointer">
+              <input
+                accept=".svg"
+                id="bulk-file-input"
+                class="hidden"
+                type="file"
+                multiple
+              />
+              <div class="btn btn-primary inline-flex">
+                <span class="material-symbols-outlined">folder_open</span>
+                Select Files
+              </div>
+            </label>
+          </div>
+
+          <div
+            id="bulk-file-list"
+            class="overflow-y-auto mt-md hidden"
+            style="max-height: 160px"
+          >
+            <h4 class="label">
+              Uploaded Files (<span id="bulk-file-count">0</span>/20)
+            </h4>
+            <div id="bulk-file-items"></div>
+          </div>
+
+          <div class="mt-sm">
+            <label class="label">Target Fill Color</label>
+            <div class="flex items-center gap-sm">
+              <div
+                class="swatch"
+                id="bulk-color-preview"
+                style="background-color: #e02726"
+              >
+                <input type="color" id="bulk-color-picker" value="#E02726" />
+              </div>
+              <input
+                class="input"
+                id="bulk-hex-text"
+                type="text"
+                value="E02726"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="label">Output Format</label>
+            <div class="flex gap-md flex-wrap">
+              <label class="option-label"
+                ><input
+                  type="radio"
+                  name="bulk-output-format"
+                  value="svg"
+                  checked
+                />
+                <span class="text-xs">SVG</span></label
+              >
+
+              <label class="option-label"
+                ><input type="radio" name="bulk-output-format" value="png" />
+                <span class="text-xs">PNG</span></label
+              >
+              <label class="option-label"
+                ><input type="radio" name="bulk-output-format" value="jpeg" />
+                <span class="text-xs">JPEG</span></label
+              >
+            </div>
+            <div
+              id="jpeg-quality-wrapper"
+              class="flex items-center gap-sm hidden"
+            >
+              <label class="text-xs text-mono">JPEG Quality:</label>
+              <input
+                type="range"
+                id="bulk-jpeg-quality"
+                min="0.1"
+                max="1.0"
+                step="0.05"
+                value="0.95"
+                class="w-full"
+                disabled
+              />
+              <span id="bulk-quality-value" class="text-xs text-mono">95%</span>
+            </div>
+            <div
+              id="bulk-png-scale-wrapper"
+              class="flex items-center gap-sm hidden"
+            >
+              <label class="text-xs text-mono">Scale:</label>
+              <input
+                type="range"
+                id="bulk-png-scale"
+                min="1"
+                max="10"
+                step="1"
+                value="4"
+                class="w-full"
+                disabled
+              />
+              <span id="bulk-png-scale-value" class="text-xs text-mono"
+                >4x</span
+              >
+            </div>
+          </div>
+
+          <button id="btn-process-bulk" class="btn btn-primary w-full">
+            Transform
+          </button>
+        </div>
+
+        <div class="card flex flex-col gap-md">
+          <h3 class="section-title mb-sm">Transformed Icons</h3>
+          <div id="results-container" class="flex-1 overflow-y-auto min-h-0">
+            <div
+              id="bulk-results-empty"
+              class="h-full flex flex-col items-center justify-center text-center text-on-surface-dim"
+            >
+              <span
+                class="material-symbols-outlined text-6xl text-outline mb-md"
+                >image</span
+              >
+              <p class="text-body">Upload some images and press "Transform"</p>
+            </div>
+            <div
+              id="bulk-results-grid"
+              class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-sm"
+            ></div>
+          </div>
+          <button
+            id="btn-download-all-bulk"
+            class="hidden btn btn-primary w-full"
+          >
+            Download
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="text-caption text-on-surface-dim">
+          Made by Faik Meta for the OER Design Studio at Fanshawe College
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
