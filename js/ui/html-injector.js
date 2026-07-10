@@ -88,11 +88,21 @@ export function setupHtmlInjector() {
     function copyText(elementId, button) {
         const ta = document.getElementById(elementId);
         if (!ta.value) return;
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(ta.value);
-        } else {
-            ta.select();
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(ta.value);
+            } else {
+                throw new Error('clipboard unavailable');
+            }
+        } catch {
+            const temp = document.createElement('textarea');
+            temp.value = ta.value;
+            temp.style.position = 'fixed';
+            temp.style.opacity = '0';
+            document.body.appendChild(temp);
+            temp.select();
             document.execCommand('copy');
+            document.body.removeChild(temp);
         }
         button.textContent = 'Copied!';
         setTimeout(() => button.textContent = 'Copy', 2000);
