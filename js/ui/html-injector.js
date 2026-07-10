@@ -88,7 +88,12 @@ export function setupHtmlInjector() {
     function copyText(elementId, button) {
         const ta = document.getElementById(elementId);
         if (!ta.value) return;
-        navigator.clipboard.writeText(ta.value);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(ta.value);
+        } else {
+            ta.select();
+            document.execCommand('copy');
+        }
         button.textContent = 'Copied!';
         setTimeout(() => button.textContent = 'Copy', 2000);
     }
