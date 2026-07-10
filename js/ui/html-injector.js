@@ -85,27 +85,43 @@ export function setupHtmlInjector() {
         }
     }
 
-    function copyText(elementId, button) {
+    async function copyText(elementId, button) {
         const ta = document.getElementById(elementId);
         if (!ta.value) return;
-        try {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(ta.value);
-            } else {
-                throw new Error('clipboard unavailable');
+
+        let success = false;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+                await navigator.clipboard.writeText(ta.value);
+                success = true;
+            } catch {
+                // Fall through to execCommand fallback
             }
-        } catch {
-            const temp = document.createElement('textarea');
-            temp.value = ta.value;
-            temp.style.position = 'fixed';
-            temp.style.opacity = '0';
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand('copy');
-            document.body.removeChild(temp);
         }
-        button.textContent = 'Copied!';
-        setTimeout(() => button.textContent = 'Copy', 2000);
+
+        if (!success) {
+            try {
+                const temp = document.createElement('textarea');
+                temp.value = ta.value;
+                temp.style.position = 'fixed';
+                temp.style.top = '0';
+                temp.style.left = '0';
+                temp.style.opacity = '0';
+                document.body.appendChild(temp);
+                temp.focus();
+                temp.select();
+                success = document.execCommand('copy');
+                document.body.removeChild(temp);
+            } catch {
+                // Both methods failed
+            }
+        }
+
+        if (success) {
+            button.textContent = 'Copied!';
+            setTimeout(() => button.textContent = 'Copy', 2000);
+        }
     }
 
 }
