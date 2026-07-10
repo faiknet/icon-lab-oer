@@ -75,11 +75,11 @@
                   <span class="text-xs">SVG</span>
                 </label>
                 <label class="option-label">
-                  <input type="checkbox" id="checkbox-target-png" />
+                  <input type="checkbox" id="checkbox-target-png" checked />
                   <span class="text-xs">PNG</span>
                 </label>
                 <label class="option-label">
-                  <input type="checkbox" id="checkbox-target-jpeg" />
+                  <input type="checkbox" id="checkbox-target-jpeg" checked />
                   <span class="text-xs">JPEG</span>
                 </label>
               </div>
@@ -94,6 +94,10 @@
               placeholder="<div> <svg>...</svg> </div>"
             ></textarea>
           </div>
+          <label class="exclude-figures-toggle">
+            <input type="checkbox" id="checkbox-exclude-figures" />
+            <span>Exclude figures</span>
+          </label>
           <button id="btn-process-html" class="btn btn-primary w-full">
             Transform
           </button>

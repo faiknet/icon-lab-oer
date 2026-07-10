@@ -37,11 +37,22 @@ export function setupHtmlInjector() {
 
         const svgStyle = `fill: ${fillColor};`;
         const imgFilter = generateCssFilterString(fillColor);
+        const excludeFigures = document.getElementById('checkbox-exclude-figures').checked;
 
         try {
             const parser = new DOMParser();
             const doc = parser.parseFromString(`<body>${input}</body>`, 'text/html');
             const elements = doc.querySelectorAll('body img, body svg');
+
+            const captionImageSrcs = new Set();
+            if (excludeFigures) {
+                const captionRegex = /\[caption[^\]]*\](.*?)\[\/caption\]/gs;
+                let match;
+                while ((match = captionRegex.exec(input)) !== null) {
+                    const imgMatch = match[1].match(/<img[^>]+src="([^"]+)"/i);
+                    if (imgMatch) captionImageSrcs.add(imgMatch[1]);
+                }
+            }
             let count = 0;
 
             elements.forEach(el => {
@@ -52,10 +63,13 @@ export function setupHtmlInjector() {
                     type = 'svg';
                 } else if (tag === 'img') {
                     const src = (el.getAttribute('src') || '').toLowerCase();
-                    if (src.includes('.svg')) type = 'svg';
-                    else if (src.endsWith('.png')) type = 'png';
-                    else if (src.endsWith('.jpg') || src.endsWith('.jpeg')) type = 'jpeg';
+                    const path = src.split('?')[0].split('#')[0];
+                    if (path.endsWith('.svg')) type = 'svg';
+                    else if (path.endsWith('.png')) type = 'png';
+                    else if (path.endsWith('.jpg') || path.endsWith('.jpeg')) type = 'jpeg';
                 }
+
+                if (excludeFigures && tag === 'img' && (el.closest('figure') || captionImageSrcs.has(el.getAttribute('src')))) return;
 
                 if ((type === 'svg' && targetSVG) || (type === 'png' && targetPNG) || (type === 'jpeg' && targetJPEG)) {
                     if (type === 'svg' && tag === 'svg') el.setAttribute('style', svgStyle);
