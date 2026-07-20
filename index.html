@@ -46,6 +46,26 @@
           images. The entire modified code will be output to the right, just
           paste it into Pressbooks!
         </div>
+        <div id="warning-banner" class="md:col-span-2 warning-banner">
+          <div class="warning-banner-content">
+            <span class="material-symbols-outlined warning-banner-icon"
+              >warning</span
+            >
+            <span
+              >Every pixel of the transformed images will be colourized,
+              including white backgrounds. Make sure your images have a
+              transparent background to avoid disappointing results.</span
+            >
+          </div>
+          <button
+            id="btn-dismiss-warning"
+            class="warning-banner-dismiss"
+            aria-label="Dismiss warning"
+            title="Dismiss warning"
+          >
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
         <div class="card flex flex-col gap-md">
           <h3 class="section-title mb-sm">Pressbooks Style Injector</h3>
           <div class="flex gap-md">
@@ -68,7 +88,22 @@
               </div>
             </div>
             <div class="flex-1">
-              <label class="label">Target Image Types</label>
+              <div class="flex items-center gap-xs">
+                <label class="label" style="display: inline-block"
+                  >Target Image Types</label
+                >
+                <span
+                  class="tooltip-container"
+                  title="All selected image types will be included in the transformation, deselect any file type that you do not want colourized"
+                >
+                  <span class="material-symbols-outlined help-icon">help</span>
+                  <span class="tooltip-text"
+                    >All selected image types will be included in the
+                    transformation, deselect any file type that you do not want
+                    colourized</span
+                  >
+                </span>
+              </div>
               <div class="flex gap-md mt-xs">
                 <label class="option-label">
                   <input type="checkbox" id="checkbox-target-svg" checked />
@@ -97,6 +132,16 @@
           <label class="exclude-figures-toggle">
             <input type="checkbox" id="checkbox-exclude-figures" />
             <span>Exclude figures</span>
+            <span
+              class="tooltip-container"
+              title="Check this if you want to exclude figure images from colourization"
+            >
+              <span class="material-symbols-outlined help-icon">help</span>
+              <span class="tooltip-text"
+                >Check this if you want to exclude figure images from
+                colourization</span
+              >
+            </span>
           </label>
           <button id="btn-process-html" class="btn btn-primary w-full">
             Transform

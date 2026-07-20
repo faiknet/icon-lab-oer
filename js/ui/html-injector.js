@@ -25,6 +25,14 @@ export function setupHtmlInjector() {
         document.getElementById('html-output-markup').value = '';
     });
 
+    const btnDismissWarning = document.getElementById('btn-dismiss-warning');
+    const warningBanner = document.getElementById('warning-banner');
+    if (btnDismissWarning && warningBanner) {
+        btnDismissWarning.addEventListener('click', () => {
+            warningBanner.style.display = 'none';
+        });
+    }
+
     function processHTML() {
         const input = document.getElementById('html-input-markup').value;
         const fillColor = colorPicker.value;
