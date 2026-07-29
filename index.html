@@ -117,6 +117,10 @@
                   <input type="checkbox" id="checkbox-target-jpeg" checked />
                   <span class="text-xs">JPEG</span>
                 </label>
+                <label class="option-label">
+                  <input type="checkbox" id="checkbox-target-webp" checked />
+                  <span class="text-xs">WEBP</span>
+                </label>
               </div>
             </div>
           </div>
@@ -163,6 +167,28 @@
           </div>
           <button id="btn-copy-html" class="btn btn-primary w-full">
             Copy
+          </button>
+        </div>
+        <div id="css-output-card" class="card md:col-span-2 flex flex-col gap-md hidden">
+          <h3 class="section-title mb-sm">CSS Output — Textbox Icons</h3>
+          <div class="info-banner">
+            <span class="material-symbols-outlined info-banner-icon">info</span>
+            <span>Textbox header icons use CSS background images and cannot be styled inline in HTML. Paste this CSS snippet into <strong>Pressbooks &rarr; Appearance &rarr; Custom Styles (Web)</strong>.</span>
+          </div>
+          <div class="flex flex-col flex-grow">
+            <div class="flex justify-end mb-xs">
+              <button id="btn-clear-css" class="link-btn">Clear</button>
+            </div>
+            <textarea
+              id="css-output-markup"
+              readonly
+              class="textarea textarea-light flex-grow text-mono"
+              style="min-height: 140px"
+              placeholder="Your CSS rule snippet will appear here..."
+            ></textarea>
+          </div>
+          <button id="btn-copy-css" class="btn btn-primary w-full">
+            Copy CSS
           </button>
         </div>
       </section>
