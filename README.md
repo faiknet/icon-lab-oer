@@ -2,6 +2,8 @@
 
 A browser-based tool for recoloring SVGs and images in Pressbooks HTML content. Built for the OER Design Studio at Fanshawe College.
 
+<img width="1428" height="730" alt="image" src="https://github.com/user-attachments/assets/3ae4941e-5f01-4be9-a8f7-f6c356680325" />
+
 ## Features
 
 - **HTML Icon Mass Injector** — Paste raw Pressbooks HTML, pick a target hex color and image types (SVG/PNG/JPEG), and inject inline CSS filter rules that recolor all matching images.
